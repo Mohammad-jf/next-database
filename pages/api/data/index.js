@@ -2,8 +2,15 @@ import connectDb from '@/utils/connectDb';
 import User from '@/models/User';
 
 export default async function handler(req, res) {
-  // connect to db
-  await connectDb();
+  try {
+    // connect to db
+    await connectDb();
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ status: 'failed', message: 'failed to connect to db' });
+  }
 
   switch (req.method) {
     case 'POST':
@@ -21,4 +28,5 @@ export default async function handler(req, res) {
       }
       break;
   }
+
 }
