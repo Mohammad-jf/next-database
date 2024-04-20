@@ -18,15 +18,20 @@ export default async function handler(req, res) {
       if (name && name.length >= 3) {
         // const user = new User({ name });
         // await user.save();
-
-        const user = await User.create({ name });
-        res
-          .status(201)
-          .json({ status: 'success', message: 'data created', data: user });
+        try {
+          const user = await User.create({ name });
+          res
+            .status(201)
+            .json({ status: 'success', message: 'data created', data: user });
+        } catch (error) {
+          console.log(error);
+          res
+            .status(500)
+            .json({ status: 'failed', message: 'failed to create user' });
+        }
       } else {
         res.status(422).json({ status: 'failed', message: 'unvalid data' });
       }
       break;
   }
-
 }
