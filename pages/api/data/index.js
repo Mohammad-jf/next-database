@@ -1,4 +1,9 @@
-export default function handler(req, res) {
+import connectDb from '@/utils/connectDb';
+
+export default async function handler(req, res) {
+  // connect to db
+  await connectDb();
+
   switch (req.method) {
     case 'POST':
       const { name } = req.body;
