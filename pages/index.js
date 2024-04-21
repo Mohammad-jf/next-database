@@ -27,6 +27,12 @@ export default function Home() {
     getUsers();
   }, [])
 
+
+  const detailsHandler = async (id) => {
+    const res = await fetch(`/api/data/${id}`);
+    const data = await res.json();
+    console.log(data)
+  }
   return (
     <>
       <h1>connecting DataBase to Next js project</h1>
@@ -57,7 +63,12 @@ export default function Home() {
 
       <div>
         <ul>
-          {users.map((user) => <li key={user._id}>{user.name}</li>)}
+          {users.map((user) => <li key={user._id}>
+            <div>
+              <h3>{user.name}</h3>
+              <button onClick={() => detailsHandler(user._id)}>log user details</button>
+            </div>
+          </li>)}
         </ul>
       </div>
     </>
