@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
 
   const sendHandler = async () => {
     const res = await fetch('/api/data', {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ name }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const data = await res.json();
-    setName('')
-    console.log(data)
-  }
+    setName('');
+    console.log(data);
+  };
 
-
-
+  const getUsers = async () => {
+    const res = await fetch('/api/data');
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <>
@@ -28,8 +31,9 @@ export default function Home() {
       <br />
 
       <div>
-        <input type="text"
-          placeholder="Enter Name"
+        <input
+          type='text'
+          placeholder='Enter Name'
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -41,6 +45,9 @@ export default function Home() {
         <button onClick={sendHandler}>Send Data</button>
       </div>
 
+      <div>
+        <button onClick={getUsers}>get useers</button>
+      </div>
     </>
-  )
+  );
 }

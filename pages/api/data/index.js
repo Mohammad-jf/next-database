@@ -10,14 +10,14 @@ export default async function handler(req, res) {
     res
       .status(500)
       .json({ status: 'failed', message: 'failed to connect to db' });
+    return;
   }
 
   switch (req.method) {
     case 'POST':
       const { name } = req.body;
       if (name && name.length >= 3) {
-        // const user = new User({ name });
-        // await user.save();
+        // const user = new User({ name }); // await user.save();
         try {
           const user = await User.create({
             name,
@@ -35,6 +35,18 @@ export default async function handler(req, res) {
         }
       } else {
         res.status(422).json({ status: 'failed', message: 'unvalid data' });
+      }
+      break;
+
+    case 'GET':
+      try {
+        const users = await User.find();
+        if (users.length) {
+          res.status(200).json(users);
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(404).json({ message: 'cant get users' });
       }
       break;
   }
