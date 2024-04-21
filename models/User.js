@@ -12,9 +12,23 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
+      minLength: 3,
       require: [true, 'please enter your name'],
     },
+
+    age: {
+      type: Number,
+      min: 10,
+      max: 50,
+      require: [true, 'please add a number'],
+    },
+
+    email: {
+      type: String,
+      require: true,
+    },
   },
+
   {
     timestamps: true,
   }
