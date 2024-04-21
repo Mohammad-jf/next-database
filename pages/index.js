@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
+  const [users, setUsers] = useState([]);
 
   const sendHandler = async () => {
     const res = await fetch('/api/data', {
@@ -15,11 +16,16 @@ export default function Home() {
     console.log(data);
   };
 
+
   const getUsers = async () => {
     const res = await fetch('/api/data');
     const data = await res.json();
-    console.log(data);
+    setUsers(data)
   };
+
+  useEffect(() => {
+    getUsers();
+  }, [])
 
   return (
     <>
@@ -45,8 +51,14 @@ export default function Home() {
         <button onClick={sendHandler}>Send Data</button>
       </div>
 
+
+      <br />
+      <br />
+
       <div>
-        <button onClick={getUsers}>get useers</button>
+        <ul>
+          {users.map((user) => <li key={user._id}>{user.name}</li>)}
+        </ul>
       </div>
     </>
   );

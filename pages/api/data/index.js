@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.log(error);
-        res.status(404).json({ message: 'cant get users' });
+        res.status(500).json({ message: 'cant get data' });
       }
       break;
   }
