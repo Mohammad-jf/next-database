@@ -43,6 +43,8 @@ export default async function handler(req, res) {
         const users = await User.find();
         if (users.length) {
           res.status(200).json(users);
+        } else {
+          res.json([]);
         }
       } catch (error) {
         console.log(error);

@@ -6,18 +6,6 @@ export default function Home() {
   const [edit, setEdit] = useState('');
   const [email, setEmail] = useState('');
 
-  const sendHandler = async () => {
-    const res = await fetch('/api/data', {
-      method: 'POST',
-      body: JSON.stringify({ name }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const data = await res.json();
-    setName('');
-    console.log(data);
-  };
-
   const getUsers = async () => {
     const res = await fetch('/api/data');
     const data = await res.json();
@@ -28,12 +16,28 @@ export default function Home() {
     getUsers();
   }, []);
 
+  // post request
+  const sendHandler = async () => {
+    const res = await fetch('/api/data', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const data = await res.json();
+    setName('');
+    console.log(data);
+    getUsers();
+  };
+
+  // get user details
   const detailsHandler = async (id) => {
     const res = await fetch(`/api/data/${id}`);
     const data = await res.json();
     console.log(data);
   };
 
+  // patch handler
   const patchHandler = async (user) => {
     const res = await fetch(`/api/data/${user._id}`, {
       method: 'PATCH',
@@ -43,16 +47,20 @@ export default function Home() {
     const data = await res.json();
     setEdit('');
     console.log(data);
+    getUsers();
   };
 
+  // delete request
   const deleteHandler = async (id) => {
     const res = await fetch(`/api/data/${id}`, {
       method: 'DELETE',
     });
     const data = await res.json();
     console.log(data);
+    getUsers();
   };
 
+  // edit user data
   const editHandler = (user) => {
     setEdit(user._id);
     setEmail(user.email);
