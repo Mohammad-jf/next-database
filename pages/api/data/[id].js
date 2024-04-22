@@ -13,7 +13,6 @@ export default async function handler(req, res) {
   }
 
   const { id } = req.query;
-
   switch (req.method) {
     case 'GET':
       try {
@@ -24,6 +23,35 @@ export default async function handler(req, res) {
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'cant get user data' });
+      }
+      break;
+
+    case 'PATCH':
+      const { email } = req.body;
+      try {
+        const user = await User.findById(id);
+        if (user) {
+          user.email = email;
+          await user.save();
+          res.status(200).json({ status: 'success', user });
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'cant update user data' });
+      }
+      break;
+
+    case 'DELETE':
+      try {
+        const user = User.findById(id);
+        if (user) {
+          // await user.deleteOne();
+          await User.findOneAndDelete({ _id: id });
+        }
+        res.status(200).json({ status: 'successfully deleted' });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'failed to delete user data' });
       }
   }
 }
